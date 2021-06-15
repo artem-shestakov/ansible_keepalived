@@ -1,0 +1,40 @@
+global_defs {
+   notification_email {
+     acassen@firewall.loc
+     failover@firewall.loc
+     sysadmin@firewall.loc
+   }
+#    notification_email_from Alexandre.Cassen@firewall.loc
+#    smtp_server 192.168.200.1
+#    smtp_connect_timeout 30
+#    router_id LVS_DEVEL
+#    vrrp_skip_check_adv_addr
+#    vrrp_strict
+#    vrrp_garp_interval 0
+#    vrrp_gna_interval 0
+}
+
+{% for index in range(0, groups.proxy|length) %}
+vrrp_instance proxy{{index}} {
+    {% if index == groups.proxy.index(inventory_hostname) %}
+    state MASTER
+    {% else %}
+    state BACKUP
+    {% endif%}
+    interface {{interface}}
+    virtual_router_id {{index + 1}}
+    {% if index == groups.proxy.index(inventory_hostname) %}
+    priority 255
+    {% else %}
+    priority {{ 255 - (index + 1) }}
+    {% endif%}
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass {{ vrrp_pass }}
+    }
+    virtual_ipaddress {
+        {{ vip[index] }}
+    }
+}
+{% endfor %}
