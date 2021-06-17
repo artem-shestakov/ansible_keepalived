@@ -3,3 +3,4 @@
   dnf:
     name: keepalived
     state: latest
+  notify: Enable and start Keepalived
