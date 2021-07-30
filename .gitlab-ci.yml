@@ -1,0 +1,32 @@
+---
+image: ansible/ansible
+stages:
+  - test
+  - release
+
+test:ansible-lint:
+  stage: test
+  script:
+    - ansible-lint -v
+  except:
+    - tags
+
+test:yamllint:
+  stage: test
+  before_script:
+    - pip install yamllint
+  script:
+    - yamllint .
+  except:
+    - tags
+
+release:
+  stage: release
+  image: registry.gitlab.com/juhani/go-semrel-gitlab:v0.21.1
+  script:
+    - release changelog --list-other-changes
+    - release commit-and-tag --list-other-changes CHANGELOG.md
+  only:
+    - main
+  except:
+    - tags
