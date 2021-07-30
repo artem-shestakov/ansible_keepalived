@@ -1,0 +1,13 @@
+---
+- name: Install keepalived
+  hosts: proxy
+  remote_user: vagrant
+  become: true
+  roles:
+    - "{{playbook_dir}}/../"
+  vars:
+    vip:
+      - 10.0.3.33
+      - 10.0.3.34
+    vrrp_pass: password
+    interface: eth1

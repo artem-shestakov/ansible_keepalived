@@ -1,7 +1,7 @@
 ---
 - name: Install Keepalived
-  dnf:
-    name:
-      - keepalived
+  apt:
+    name: keepalived
     state: present
+    update_cache: true
   notify: Enable and start Keepalived

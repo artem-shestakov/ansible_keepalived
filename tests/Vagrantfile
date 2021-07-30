@@ -1,13 +1,16 @@
 Vagrant.configure("2") do |config|
-    proxies = ["proxy01", "proxy02"]
-    proxies.each_with_index do |proxy, index|
+    proxies = {
+    "proxy01" => {:box => "centos/8"},
+    "proxy02" => {:box => "ubuntu/focal64"}
+    }
+    proxies.each_with_index do |(proxy, info), index|
         config.vm.define "#{proxy}" do |d|
-            d.vm.box = "centos/8"
+            d.vm.box = "#{info[:box]}"
             d.vm.network "private_network", ip: "10.0.3.3#{index+1}", name: "vboxnet1"
             d.vm.hostname = "#{proxy}"
             d.vm.disk :disk, size: "10GB", primary: true
             d.vm.provider "virtualbox" do |vb|
-                vb.memory = 4096
+                vb.memory = 2048
                 vb.cpus = 1
                 vb.customize ["modifyvm", :id, "--audiocontroller", "sb16"]
                 vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]

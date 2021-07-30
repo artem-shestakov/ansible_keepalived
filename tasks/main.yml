@@ -10,3 +10,4 @@
     group: root
     mode: '0644'
   notify: Re-start Keepalived
+  when: mode == "master-master"

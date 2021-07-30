@@ -1,0 +1,34 @@
+---
+image: python:3.9-slim
+stages:
+  - test
+  - release
+
+test:ansible-lint:
+  stage: test
+  before_script:
+    - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
+  script:
+    - ansible-lint -v
+  except:
+    - tags
+
+test:yamllint:
+  stage: test
+  before_script:
+    - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
+  script:
+    - yamllint .
+  except:
+    - tags
+
+release:
+  stage: release
+  image: registry.gitlab.com/juhani/go-semrel-gitlab:v0.21.1
+  script:
+    - release changelog
+    - release commit-and-tag CHANGELOG.md
+  only:
+    - main
+  except:
+    - tags
