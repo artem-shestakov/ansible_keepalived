@@ -29,6 +29,6 @@ release:
     - release changelog
     - release commit-and-tag CHANGELOG.md
   only:
-    - main
+    - master
   except:
     - tags
