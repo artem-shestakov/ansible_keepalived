@@ -8,15 +8,26 @@ Requirements
 ------------
 None
 
+Inventory Variables
+--------------
+
+* `interface` interface for inside_network, bound by vrrp
+
 Role Variables
 --------------
 
-* `mode` describes the operating mode the sync daemons. Has two value:
-  - master-master - all nodes have master role. Default
-  - master-backup - only one node has master role.
+* `mode` describes the operating mode the sync daemons. Has two value `master-master` or `master-backup`. Now work only `master-master`.
 * `vip` List of VIP adresses of the cluster.
-* `vrrp_pass` Password for accessing vrrpd. Only the first eight (8) characters are used
-* `interface` interface for inside_network, bound by vrrp
+* `global_defs`:
+  - `notification_email` - List of emails to notify from `Keepalived`.
+  - `notification_email_from` - Email from address that will be in the header.
+  - `smtp_server` - Remote SMTP server used to send notification email.
+  - `smtp_connect_timeout` - SMTP server connection timeout in seconds.
+* `vrrp_instance`
+  -  `authentication`
+      - `auth_type` - PASS - Simple password (suggested). AH - IPSEC (not recommended)). Default `PASS`.
+      - `auth_pass` - Password for accessing vrrpd. Only the first eight (8) characters are used. If `auth_pass` has not specified, `authentication` will be missing.
+
 
 Example Playbook
 ----------------
@@ -32,17 +43,26 @@ Example of setup MASTERs on two nodes cluster with IP 10.0.0.1-2 and VIP 10.0.0.
     - artem-shestakov.keepalived
   vars:
     vip:
-      - 10.0.0.3
-      - 10.0.0.4
+      - 10.0.3.33
+      - 10.0.3.34
     vrrp_pass: password
-    interface: eth1
+    global_defs:
+      notification_email:
+        - artem.s.shestakov@gmail.com
+      notification_email_from: keepalive@example.com
+      smtp_server: 127.0.0.1
+      smtp_connect_timeout: 60
+    vrrp_instance:
+      authentication:
+        auth_type: PASS
+        auth_pass: password
 
 ```
 Inventory file:
 ```ini
 [proxy]
-10.0.3.1
-10.0.3.2
+10.0.3.31 interface=eth1
+10.0.3.32 interface=enp0s8
 ```
 
 License
