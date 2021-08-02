@@ -8,6 +8,11 @@ Requirements
 ------------
 None
 
+Inventory Variables
+--------------
+
+* `interface` interface for inside_network, bound by vrrp
+
 Role Variables
 --------------
 
@@ -16,7 +21,7 @@ Role Variables
   - master-backup - only one node has master role.
 * `vip` List of VIP adresses of the cluster.
 * `vrrp_pass` Password for accessing vrrpd. Only the first eight (8) characters are used
-* `interface` interface for inside_network, bound by vrrp
+
 
 Example Playbook
 ----------------
@@ -32,17 +37,22 @@ Example of setup MASTERs on two nodes cluster with IP 10.0.0.1-2 and VIP 10.0.0.
     - artem-shestakov.keepalived
   vars:
     vip:
-      - 10.0.0.3
-      - 10.0.0.4
+      - 10.0.3.33
+      - 10.0.3.34
     vrrp_pass: password
-    interface: eth1
+    global_defs:
+      notification_email:
+        - artem.s.shestakov@gmail.com
+      notification_email_from: keepalive@example.com
+      smtp_server: 127.0.0.1
+      smtp_connect_timeout: 60
 
 ```
 Inventory file:
 ```ini
 [proxy]
-10.0.3.1
-10.0.3.2
+10.0.3.31 interface=eth1
+10.0.3.32 interface=enp0s8
 ```
 
 License

@@ -1,10 +1,21 @@
+global_defs {
+    notification_email {
+    {% for email in global_defs['notification_email'] %}
+    {{email}}
+    {% endfor -%}
+    }
+    notification_email_from {{ global_defs['notification_email_from'] }}
+    smtp_server {{ global_defs['smtp_server'] }}
+    smtp_connect_timeout {{ global_defs['smtp_connect_timeout'] }}
+}
+
 {% for index in range(0, groups.proxy|length) %}
 vrrp_instance proxy{{index}} {
-    {% if index == groups.proxy.index(inventory_hostname) %}
+    {% if index == groups.proxy.index(inventory_hostname) -%}
     state MASTER
-    {% else %}
+    {% else -%}
     state BACKUP
-    {% endif%}
+    {% endif -%}
     interface {{interface}}
     virtual_router_id {{index + 1}}
     {% if index == groups.proxy.index(inventory_hostname) %}

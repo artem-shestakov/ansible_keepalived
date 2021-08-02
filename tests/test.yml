@@ -10,3 +10,9 @@
       - 10.0.3.33
       - 10.0.3.34
     vrrp_pass: password
+    global_defs:
+      notification_email:
+        - artem.s.shestakov@gmail.com
+      notification_email_from: keepalive@example.com
+      smtp_server: 127.0.0.1
+      smtp_connect_timeout: 60
