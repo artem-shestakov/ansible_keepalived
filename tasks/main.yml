@@ -1,0 +1,14 @@
+---
+- name: Install Keepalived
+  include_tasks: "{{ ansible_facts['os_family'] | lower }}.yml"
+
+- name: Copy config file
+  ansible.builtin.template:
+    src: master_master.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    owner: root
+    group: root
+    mode: '0644'
+    lstrip_blocks: true
+  notify: Re-start Keepalived
+  when: mode == "master-master"

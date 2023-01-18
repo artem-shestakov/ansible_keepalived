@@ -1,0 +1,20 @@
+---
+- name: Install keepalived
+  hosts: proxy
+  remote_user: vagrant
+  become: true
+  roles:
+    - "{{ playbook_dir }}/../"
+  vars:
+    vip:
+      - 10.0.3.34
+      - 10.0.3.35
+      - 10.0.3.36
+    vrrp_instance:
+      authentication:
+        auth_type: PASS
+        auth_pass: password
+    vrrp_script:
+      name: nginx
+      script: '/usr/bin/pgrep haproxy'
+      interval: 5

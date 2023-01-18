@@ -1,0 +1,7 @@
+---
+- name: Install Keepalived
+  apt:
+    name: keepalived
+    state: present
+    update_cache: true
+  notify: Enable and start Keepalived

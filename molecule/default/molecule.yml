@@ -1,0 +1,49 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: instance01
+    image: ${MOLECULE_PLATFORM_IMAGE:-"geerlingguy/docker-ubuntu2004-ansible:latest"}
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    docker_networks:
+      - name: 'molecule-keepalived'
+        ipam_config:
+          - subnet: '172.20.0.0/24'
+    networks:
+      - name: "molecule-keepalived"
+        ipv4_address: '172.20.0.11'
+  - name: instance02
+    image: ${MOLECULE_PLATFORM_IMAGE:-"geerlingguy/docker-ubuntu2004-ansible:latest"}
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    docker_networks:
+      - name: 'molecule-keepalived'
+        ipam_config:
+          - subnet: '172.20.0.0/24'
+    networks:
+      - name: "molecule-keepalived"
+        ipv4_address: '172.20.0.12'
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      fact_caching: jsonfile
+      fact_caching_connection: $MOLECULE_EPHEMERAL_DIRECTORY/.facts
+      fact_caching_timeout: 600
+      gather_timeout: 20
+      interpreter_python: auto
+verifier:
+  name: testinfra
+  options:
+    connection: docker
+    v: 2
+

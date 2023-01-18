@@ -1,0 +1,7 @@
+---
+- name: Install Keepalived
+  dnf:
+    name:
+      - keepalived
+    state: present
+  notify: Enable and start Keepalived

@@ -1,0 +1,27 @@
+Vagrant.configure("2") do |config|
+    proxies = {
+    "proxy01" => {:box => "centos/8"},
+    "proxy02" => {:box => "ubuntu/focal64"},
+    "proxy03" => {:box => "centos/8"},
+    }
+    proxies.each_with_index do |(proxy, info), index|
+        config.vm.define "#{proxy}" do |d|
+            d.vm.box = "#{info[:box]}"
+            d.vm.network "private_network", ip: "10.10.10.3#{index+1}", name: "vboxnet1"
+            d.vm.hostname = "#{proxy}"
+            d.vm.disk :disk, size: "10GB", primary: true
+            d.vm.provider "virtualbox" do |vb|
+                vb.memory = 2048
+                vb.cpus = 1
+                vb.customize ["modifyvm", :id, "--audiocontroller", "sb16"]
+                vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+            end
+            d.vm.provision "file", source: "/Users/ashestakov/.ssh/id_rsa.pub", destination: "/home/vagrant/key.pub"
+            d.vm.provision "shell", inline: <<-SHELL
+                cat /home/vagrant/key.pub >> /home/vagrant/.ssh/authorized_keys
+                sudo sed -i -e "s|mirrorlist=|#mirrorlist=|g" /etc/yum.repos.d/CentOS-*
+                sudo sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-*
+            SHELL
+        end
+    end
+end
