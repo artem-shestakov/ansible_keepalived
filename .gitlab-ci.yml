@@ -3,6 +3,7 @@ image: python:3.10-slim
 
 stages:
   - test
+  - pre-release
   - release
 
 variables:
