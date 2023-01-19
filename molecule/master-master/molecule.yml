@@ -46,4 +46,3 @@ verifier:
   options:
     connection: docker
     v: 2
-

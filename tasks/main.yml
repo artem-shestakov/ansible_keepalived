@@ -1,6 +1,6 @@
 ---
 - name: Install Keepalived
-  include_tasks: "{{ ansible_facts['os_family'] | lower }}.yml"
+  ansible.builtin.include_tasks: "{{ ansible_facts['os_family'] | lower }}.yml"
 
 - name: Copy config file
   ansible.builtin.template:

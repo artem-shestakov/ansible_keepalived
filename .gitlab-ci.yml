@@ -1,47 +1,10 @@
-# ---
-# image: python:3.9-slim
-# stages:
-#   - test
+---
+image: python:3.10-slim
+stages:
+  - test
+
+include:
+  - local: .gitlab-ci/test.yml
+
 #   - release
 #   - deploy
-
-# test:ansible-lint:
-#   stage: test
-#   before_script:
-#     - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
-#   script:
-#     - ansible-lint -v
-#   except:
-#     - tags
-
-# test:yamllint:
-#   stage: test
-#   before_script:
-#     - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
-#   script:
-#     - yamllint .
-#   except:
-#     - tags
-
-# release:versioning:
-#   stage: release
-#   image: registry.gitlab.com/juhani/go-semrel-gitlab:v0.21.1
-#   script:
-#     - release changelog
-#     - release commit-and-tag CHANGELOG.md
-#   only:
-#     - master
-#   except:
-#     - tags
-
-# deploy:galaxy_import:
-#   stage: deploy
-#   before_script:
-#     - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
-#   script: >
-#     ansible-galaxy role import --ignore-certs --role-name keepalived
-#     --token $GALAXY_TOKEN   artem-shestakov ansible_keepalived
-#   only:
-#     - master
-#   except:
-#     - tags

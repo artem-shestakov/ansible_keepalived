@@ -1,6 +1,6 @@
 ---
-- name: Install Keepalived
-  dnf:
+- name: Install Keepalived on Red Hat OS family
+  ansible.builtin.dnf:
     name:
       - keepalived
     state: present
