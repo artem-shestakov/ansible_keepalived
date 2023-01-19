@@ -1,5 +1,5 @@
 global_defs {
-    router_id {{ inventory_hostname }}
+  router_id {{ inventory_hostname }}
 }
 
 {% if vrrp_script is defined %}
@@ -17,38 +17,38 @@ vrrp_script {{ vrrp_script['name'] | default('chk_script') }} {
 {% set offset_inc = namespace(value=1) %}
 {% for index in range(0, ansible_play_hosts|length) %}
 vrrp_instance {{ansible_play_hosts[index]}} {
-    {% if index == ansible_play_hosts.index(inventory_hostname) -%}
-    state MASTER
-    {% else -%}
-    state BACKUP
-    {% endif -%}
-    interface {{interface}}
-    virtual_router_id {{index + 1}}
-    {% if index == ansible_play_hosts.index(inventory_hostname) -%}
-    priority 250
+    {% if index == ansible_play_hosts.index(inventory_hostname) %}
+  state MASTER
+    {% else %}
+  state BACKUP
+    {% endif %}
+  interface {{interface}}
+  virtual_router_id {{index + 1}}
+    {% if index == ansible_play_hosts.index(inventory_hostname) %}
+  priority 250
     {% set offset.value = 1 %}
     {% set offset_inc.value = 1 %}
-    {% else -%}
+    {% else %}
     {% if index == 0%}
         {% set offset.value = ansible_play_hosts|length - ansible_play_hosts.index(inventory_hostname) %}
     {% endif %}
-    priority {{ 250 - 10 * offset.value }}
+  priority {{ 250 - 10 * offset.value }}
     {% set offset.value = offset.value + offset_inc.value %}
-    {% endif -%}
-    advert_int 1
-    {% if vrrp_instance['authentication']['auth_pass'] -%}
-    authentication {
-        auth_type PASS
-        auth_pass {{ vrrp_instance['authentication']['auth_pass'] }}
-    }
-    {% endif -%}
-    virtual_ipaddress {
-        {{ vip[index] }}
-    }
-    {% if vrrp_script is defined -%}
-    track_script {
-        {{ vrrp_script['name'] | default('chk_script') }}
-    }
+    {% endif %}
+  advert_int 1
+    {% if vrrp_instance['authentication']['auth_pass'] %}
+  authentication {
+    auth_type PASS
+    auth_pass {{ vrrp_instance['authentication']['auth_pass'] }}
+  }
+    {% endif %}
+  virtual_ipaddress {
+      {{ vip[index] }}
+  }
+    {% if vrrp_script is defined %}
+  track_script {
+    {{ vrrp_script['name'] | default('chk_script') }}
+  }
     {% endif %}
 }
 {% endfor %}

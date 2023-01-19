@@ -15,5 +15,5 @@ vrrp_instance:
     auth_pass: $uper_$ecret
 vrrp_script:
   name: nginx
-  script: 'pgrep nginx'
+  script: '/usr/bin/pgrep nginx'
   interval: 1

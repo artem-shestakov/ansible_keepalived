@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: instance01
+  tasks:
+    - name: Update repositories cache and install nginx
+      ansible.builtin.apt:
+        name: nginx
+        update_cache: yes
