@@ -1,5 +1,5 @@
 ---
-- name: Install Keepalived
+- name: Install Keepalived on Red Hat OS family
   dnf:
     name:
       - keepalived

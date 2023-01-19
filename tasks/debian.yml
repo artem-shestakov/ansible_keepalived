@@ -1,5 +1,5 @@
 ---
-- name: Install Keepalived
+- name: Install Keepalived on Debian OS family
   apt:
     name: keepalived
     state: present

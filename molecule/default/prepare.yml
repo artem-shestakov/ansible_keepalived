@@ -6,3 +6,7 @@
       ansible.builtin.apt:
         name: nginx
         update_cache: yes
+    - name: Make sure a nginx is running
+      ansible.builtin.systemd:
+        state: started
+        name: nginx
