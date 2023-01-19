@@ -2,6 +2,7 @@
 test:ansible-lint:
   stage: test
   before_script:
+    - apt update && apt install -y git
     - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
   script:
     - ansible-lint -v
@@ -17,6 +18,7 @@ test:ansible-lint:
 test:yamllint:
   stage: test
   before_script:
+    - apt update && apt install -y git
     - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
   script:
     - yamllint .
