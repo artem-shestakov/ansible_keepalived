@@ -1,6 +1,6 @@
 fetch-version:
   stage: pre-release
-  image: node:16
+  image: node:18
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
     - if: '$CI_COMMIT_BRANCH == "develop"'
@@ -15,7 +15,7 @@ fetch-version:
 
 release:
   stage: release
-  image: node:16
+  image: node:18
   rules:
     - if: '$CI_COMMIT_BRANCH == "master" && $CI_PIPELINE_SOURCE !="web"'
     - if: '$CI_COMMIT_BRANCH == "develop" && $CI_PIPELINE_SOURCE !="web"'
