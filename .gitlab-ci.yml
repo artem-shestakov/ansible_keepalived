@@ -1,10 +1,14 @@
 ---
 image: python:3.10-slim
+
 stages:
   - test
+  - pre-release
+  - release
+
+variables:
+  GL_TOKEN: $CI_JOB_TOKEN
 
 include:
   - local: .gitlab-ci/test.yml
-
-#   - release
-#   - deploy
+  - local: .gitlab-ci/release.yml
