@@ -14,10 +14,10 @@ platforms:
     docker_networks:
       - name: 'molecule-keepalived'
         ipam_config:
-          - subnet: '172.20.0.0/24'
+          - subnet: '10.255.0.0/24'
     networks:
       - name: "molecule-keepalived"
-        ipv4_address: '172.20.0.11'
+        ipv4_address: '10.255.0.11'
   - name: instance02
     image: ${MOLECULE_PLATFORM_IMAGE:-"geerlingguy/docker-ubuntu2004-ansible:latest"}
     command: ${MOLECULE_DOCKER_COMMAND:-""}
@@ -28,10 +28,10 @@ platforms:
     docker_networks:
       - name: 'molecule-keepalived'
         ipam_config:
-          - subnet: '172.20.0.0/24'
+          - subnet: '10.255.0.0/24'
     networks:
       - name: "molecule-keepalived"
-        ipv4_address: '172.20.0.12'
+        ipv4_address: '10.255.0.12'
 provisioner:
   name: ansible
   config_options:
@@ -45,4 +45,4 @@ verifier:
   name: testinfra
   options:
     connection: docker
-    v: 2
+    v: 1
