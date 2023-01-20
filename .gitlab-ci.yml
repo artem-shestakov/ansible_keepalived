@@ -6,9 +6,6 @@ stages:
   - pre-release
   - release
 
-variables:
-  GL_TOKEN: $CI_JOB_TOKEN
-
 include:
   - local: .gitlab-ci/test.yml
   - local: .gitlab-ci/release.yml
