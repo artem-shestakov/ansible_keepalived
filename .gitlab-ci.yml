@@ -5,7 +5,9 @@ stages:
   - test
   - pre-release
   - release
+  - deploy
 
 include:
   - local: .gitlab-ci/test.yml
   - local: .gitlab-ci/release.yml
+  - local: .gitlab-ci/deploy.yml
