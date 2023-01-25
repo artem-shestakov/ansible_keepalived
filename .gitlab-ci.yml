@@ -1,12 +1,14 @@
 ---
 image: python:3.10-slim
 
+variables:
+  SECRETS: GALAXY_API_KEY=$GALAXY_API_KEY
+
 stages:
   - test
   - pre-release
   - release
   - migrate
-  - deploy
 
 include:
   - local: .gitlab-ci/test.yml
