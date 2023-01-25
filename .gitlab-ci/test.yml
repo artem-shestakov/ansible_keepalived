@@ -41,8 +41,11 @@ test:molecule:
   parallel:
     matrix:
       - MOLECULE_PLATFORM_IMAGE: 
+          - geerlingguy/docker-ubuntu1804-ansible:latest
           - geerlingguy/docker-ubuntu2004-ansible:latest
           - geerlingguy/docker-ubuntu2204-ansible:latest
+          - geerlingguy/docker-centos8-ansible
+          - geerlingguy/docker-rockylinux8-ansible
   rules:
     - if: '$CI_COMMIT_BRANCH == "master" || $CI_COMMIT_TAG'
       when: never
