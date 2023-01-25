@@ -1,4 +1,9 @@
-venv
+# Python
+.venv
+__pycache__
+
+#Other
+.vscode
 .vagrant
 */key
 */key.pub

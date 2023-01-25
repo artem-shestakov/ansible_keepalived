@@ -1,6 +1,6 @@
 ---
-- name: Install Keepalived
-  apt:
+- name: Install Keepalived on Debian OS family
+  ansible.builtin.apt:
     name: keepalived
     state: present
     update_cache: true

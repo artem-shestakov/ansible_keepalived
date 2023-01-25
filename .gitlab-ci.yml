@@ -1,47 +1,19 @@
-# ---
-# image: python:3.9-slim
-# stages:
-#   - test
-#   - release
-#   - deploy
+---
+image: python:3.10-slim
 
-# test:ansible-lint:
-#   stage: test
-#   before_script:
-#     - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
-#   script:
-#     - ansible-lint -v
-#   except:
-#     - tags
+variables:
+  SECRETS: GALAXY_API_KEY=$GALAXY_API_KEY
 
-# test:yamllint:
-#   stage: test
-#   before_script:
-#     - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
-#   script:
-#     - yamllint .
-#   except:
-#     - tags
+stages:
+  - test
+  - pre-release
+  - release
+  - migrate
 
-# release:versioning:
-#   stage: release
-#   image: registry.gitlab.com/juhani/go-semrel-gitlab:v0.21.1
-#   script:
-#     - release changelog
-#     - release commit-and-tag CHANGELOG.md
-#   only:
-#     - master
-#   except:
-#     - tags
-
-# deploy:galaxy_import:
-#   stage: deploy
-#   before_script:
-#     - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
-#   script: >
-#     ansible-galaxy role import --ignore-certs --role-name keepalived
-#     --token $GALAXY_TOKEN   artem-shestakov ansible_keepalived
-#   only:
-#     - master
-#   except:
-#     - tags
+include:
+  - local: .gitlab-ci/test.yml
+  - local: .gitlab-ci/release.yml
+  - project: artem-shestakov/pipeline-template
+    file: github_mirror.yml
+    ref: master
+  # - local: .gitlab-ci/deploy.yml
