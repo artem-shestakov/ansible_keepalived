@@ -5,9 +5,13 @@ stages:
   - test
   - pre-release
   - release
+  - migrate
   - deploy
 
 include:
   - local: .gitlab-ci/test.yml
   - local: .gitlab-ci/release.yml
-  - local: .gitlab-ci/deploy.yml
+  - project: artem-shestakov/pipeline-template
+    file: github_mirror.yml
+    ref: master
+  # - local: .gitlab-ci/deploy.yml
