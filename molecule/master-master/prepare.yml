@@ -2,10 +2,19 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: Update repositories cache and install nginx
+    - name: Install required packages for tests (Debian)
       ansible.builtin.apt:
         name: nginx
         update_cache: yes
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: Install required packages for tests (Red Hat)
+      ansible.builtin.yum:
+        name: 
+          - nginx
+          - iproute
+      when: ansible_facts['os_family'] == "RedHat"
+
     - name: Make sure a nginx is running
       ansible.builtin.systemd:
         state: started
