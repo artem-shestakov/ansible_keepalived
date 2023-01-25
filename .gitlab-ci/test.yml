@@ -33,11 +33,16 @@ test:yamllint:
 
 test:molecule:
   stage: test
-  image: artemshestakov/ansible:5.6.0
+  image: artemshestakov/ansible:6.7.0
   variables:
     PY_COLORS: 1
   script:
     - molecule test -s master-master
+  parallel:
+    matrix:
+      - MOLECULE_PLATFORM_IMAGE: 
+          - geerlingguy/docker-ubuntu2004-ansible:latest
+          - geerlingguy/docker-ubuntu2204-ansible:latest
   rules:
     - if: '$CI_COMMIT_BRANCH == "master" || $CI_COMMIT_TAG'
       when: never
