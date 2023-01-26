@@ -5,9 +5,7 @@ on:
     branches:
       - master
     tags:
-      - 'v*'
-    tags-ignore:
-      - 'v*develop.*'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 jobs:
   publish:
     name: publish
