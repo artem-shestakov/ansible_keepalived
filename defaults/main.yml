@@ -1,12 +1,6 @@
 ---
+interface: "{{ ansible_default_ipv4.interface }}"
 mode: master-master
-global_defs:
-  notification_email:
-    - ""
-  notification_email_from: ""
-  smtp_server: 127.0.0.1
-  smtp_connect_timeout: 30
-
 vrrp_instance:
   authentication:
     auth_type: PASS
